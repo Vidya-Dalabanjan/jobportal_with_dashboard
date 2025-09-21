@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./shared/Navbar";
 import FilterCard from "./FilterCard";
-import Job from "./job";
+import Job from "./Job";
 import { useSelector } from "react-redux";
-import { motion } from "framer-motion";
 
 const Jobs = () => {
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
@@ -28,13 +27,13 @@ const Jobs = () => {
       <Navbar />
       <div className="max-w-7xl mx-auto mt-5">
         <div className="flex gap-5">
-          <div className="w-20%">
+          <div className="w-1/5">
             <FilterCard />
           </div>
           {filterJobs.length <= 0 ? (
             <span>Job Not Found</span>
           ) : (
-            <div className="flex-1 h-[88vh] overflow-t-auto pb-5">
+            <div className="flex-1 h-[88vh] overflow-auto pb-5">
               <div className="grid grid-cols-3 gap-4">
                 {filterJobs.map((job) => (
                   <motion.div
