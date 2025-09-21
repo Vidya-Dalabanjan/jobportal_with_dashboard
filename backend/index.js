@@ -37,7 +37,7 @@ app.use(express.static(path.join(_dirname, "/frontend/dist")));
 app.get("/*wildcard", (_, res) => {
   res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
 });
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   connectDB();
   console.log(`server running at port ${PORT}`);
