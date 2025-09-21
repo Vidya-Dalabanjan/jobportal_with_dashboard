@@ -21,7 +21,7 @@ app.use(cookieParser());
 const corsOptions = {
   origin: [
     "http://localhost:5173", // dev port
-    "http://localhost:8000", // deployed frontend port
+    "https://jobportal-with-dashboard-2.onrender.com", // deployed frontend port
   ],
   credentials: true,
 };
