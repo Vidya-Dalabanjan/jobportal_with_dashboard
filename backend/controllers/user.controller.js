@@ -1,0 +1,177 @@
+import { User } from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
+export const register = async (req, res) => {
+  try {
+    const { fullName, email, phoneNumber, password, role } = req.body;
+
+    if (!fullName || !email || !phoneNumber || !password || !role) {
+      return res.status(400).json({
+        message: "something is missing",
+        SUCCESS: false,
+      });
+    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists with this email.",
+        SUCCESS: false,
+      });
+    }
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({
+        message: "user already exist with this email.",
+        SUCCESS: false,
+      });
+    }
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    await User.create({
+      fullName,
+      email,
+      phoneNumber,
+      password: hashPassword,
+      role,
+      profile: {
+        profilePhoto: cloudResponse.secure_url,
+      },
+    });
+    return res.status(201).json({
+      message: "Account Created Successfully.",
+      SUCCESS: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const login = async (req, res) => {
+  try {
+    const { email, password, role } = req.body;
+    if (!email || !password || !role) {
+      return res.status(400).json({
+        message: "something is missing",
+        SUCCESS: false,
+      });
+    }
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "Incorrect Email or Password",
+        SUCCESS: false,
+      });
+    }
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(400).json({
+        message: "Incorrect Email or Password",
+        SUCCESS: false,
+      });
+    }
+    //check role correct or not
+    if (role != user.role) {
+      return res.status(400).json({
+        message: "Account doesn't exist with current role.",
+        SUCCESS: false,
+      });
+    }
+    const tokenData = {
+      userId: user._id,
+    };
+    const token = jwt.sign(tokenData, process.env.SECRET_KEY, {
+      expiresIn: "15d",
+    });
+    user = {
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      profile: user.profile,
+    };
+
+    return res
+      .status(200)
+      .cookie("token", token, {
+        maxAge: 1 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
+      })
+      .json({
+        message: `welcome back ${user.fullName}`,
+        user,
+        SUCCESS: true,
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const logout = async (req, res) => {
+  try {
+    return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+      message: "Logged out successfylly",
+      SUCCESS: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { fullName, email, phoneNumber, bio, skills } = req.body;
+
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
+    //cloudinary comes here
+    let skillsArray;
+    if (skills) {
+      skillsArray = skills.split(",");
+    }
+    const userId = req.id; //middleware authontication
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found.",
+        SUCCESS: false,
+      });
+    }
+    //updating data
+    if (fullName) user.fullName = fullName;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skillsArray) user.profile.skills = skillsArray;
+
+    //resume comes later here...
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
+      user.profile.resumeOriginalName = file.originalname; // Save the original file name
+    }
+
+    await user.save();
+    user = {
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      profile: user.profile,
+    };
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      user,
+      SUCCESS: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
