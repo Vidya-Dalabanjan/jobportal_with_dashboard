@@ -25,10 +25,10 @@ const HeroSection = () => {
           <span className="text-[#6a38c2]">Get Your Dream Job</span>
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
-          + Find your dream job with{" "}
-          <span className="text-[#6a38c2] font-bold">JobPortal</span>. +
+          Find your dream job with{" "}
+          <span className="text-[#6a38c2] font-bold">JobPortal</span>. 
           Discover verified job listings, create your profile, and apply in just
-          a few clicks. + We make your job search simple, fast, and effective. +{" "}
+          a few clicks. We make your job search simple, fast, and effective.
         </p>
         <div className="flex w-full md:w-[60%] lg:w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full gap-2 mx-auto items-center">
           <input
