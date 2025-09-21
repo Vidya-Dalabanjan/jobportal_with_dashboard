@@ -21,7 +21,7 @@ app.use(cookieParser());
 const corsOptions = {
   origin: [
     "http://localhost:5173", // dev port
-     // deployed frontend port
+    // deployed frontend port
   ],
   credentials: true,
 };
@@ -35,7 +35,7 @@ app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 app.use(express.static(path.join(_dirname, "/frontend/dist")));
 app.get("/*wildcard", (_, res) => {
-  res.sendFile(path.join(_dirname, "frontend", "dist", "index.html"));
+  res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
