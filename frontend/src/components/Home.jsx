@@ -20,11 +20,12 @@ const Home = () => {
   return (
     <div>
       <Navbar />
-      <HeroSection />
-      <CategoryCarousel />
+      <div className="px-4 md:px-10 lg:px-20">
+        <HeroSection />
+        <CategoryCarousel />
 
-      <LatestJobs />
-
+        <LatestJobs />
+      </div>
       <Footer />
     </div>
   );
