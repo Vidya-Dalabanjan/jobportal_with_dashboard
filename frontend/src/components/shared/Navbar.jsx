@@ -1,4 +1,3 @@
-import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -13,6 +12,7 @@ import { USER_API_END_POINT } from "@/utils/constant";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`${USER_API_END_POINT}/logout`, {
@@ -31,14 +31,14 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   return (
     <div className="bg-white">
-      <div className="items-center flex justify-between mx-auto max-w-7xl h-16">
+      <div className="flex flex-col md:flex-row items-center justify-between mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-auto md:h-16 py-4 md:py-0">
         <div>
           <h1 className="text-2xl font-bold">
             Job<span className="text-[#F83002]">Portal</span>
           </h1>
         </div>
-        <div className="flex items-center gap-12">
-          <ul className="flex items-center gap-5 font-medium">
+        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-12 mt-4 md:mt-0">
+          <ul className="flex flex-col md:flex-row items-center gap-3 md:gap-5 font-medium">
             {user && user.role == "recruiter" ? (
               <>
                 <li>
@@ -63,7 +63,7 @@ const Navbar = () => {
             )}
           </ul>
           {!user ? (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col md:flex-row items-center gap-2 mt-4 md:mt-0">
               <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>
@@ -74,7 +74,7 @@ const Navbar = () => {
               </Link>
             </div>
           ) : (
-            <Popover>
+            <Popover className="mt-4 md:mt-0">
               <PopoverTrigger asChild>
                 <Avatar className="cursor-pointer">
                   <AvatarImage

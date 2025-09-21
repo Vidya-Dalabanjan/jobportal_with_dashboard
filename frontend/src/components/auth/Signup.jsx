@@ -75,9 +75,11 @@ const Signup = () => {
       <div className="flex items-center justify-center max-w-7xl mx-auto">
         <form
           onSubmit={submitHandler}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
+          className="w-full max-w-md border border-gray-200 rounded-md p-6 sm:p-8 my-10 bg-white shadow-md"
         >
-          <h1 className="font-bold text-xl mb-5">Sign up</h1>
+          <h1 className="font-bold text-2xl sm:text-3xl mb-6 text-center">
+            Sign up
+          </h1>
           <div className="my-2">
             <Label className="my-2">Full Name</Label>
             <Input
@@ -119,7 +121,7 @@ const Signup = () => {
             />
           </div>
           <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center justify-between gap-4 my-5">
+            <RadioGroup className="flex flex-col sm:flex-row gap-4 mb-4">
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
@@ -143,7 +145,7 @@ const Signup = () => {
                 <Label htmlFor="recruiter">Recruiter</Label>
               </div>
             </RadioGroup>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
               <Label>Profile</Label>
               <Input
                 accept="image/*"
@@ -164,7 +166,7 @@ const Signup = () => {
               Signup
             </Button>
           )}
-          <span className="text-sm">
+          <span className="text-sm text-center">
             Already have an account?
             <Link to="/login" className="text-blue-600">
               Login
