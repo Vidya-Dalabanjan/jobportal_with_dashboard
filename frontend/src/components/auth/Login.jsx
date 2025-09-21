@@ -57,12 +57,14 @@ const Login = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <div className="flex items-center justify-center flex-1 px-4 sm:px-6 lg:px-8">
         <form
           onSubmit={submitHandler}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
+          className="w-full max-w-md border border-gray-200 rounded-md p-6 sm:p-8 my-10 bg-white shadow-md"
         >
-          <h1 className="font-bold text-xl mb-5">Log In</h1>
+          <h1 className="font-bold text-2xl sm:text-3xl mb-6 text-center">
+            Log In
+          </h1>
 
           <div className="my-2">
             <Label className="my-2">Email</Label>
@@ -86,7 +88,7 @@ const Login = () => {
             />
           </div>
           <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center justify-between gap-4 my-5">
+            <RadioGroup className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
@@ -122,7 +124,7 @@ const Login = () => {
             </Button>
           )}
 
-          <span className="text-sm">
+          <span className="text-sm text-center">
             Don't have an account?
             <Link to="/signup" className="text-blue-600">
               Sign up
