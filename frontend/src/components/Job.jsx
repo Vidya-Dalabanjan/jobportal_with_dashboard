@@ -17,7 +17,7 @@ const Job = ({ job }) => {
     <div className="p-5 rounded-md shadow-xl bg-white border-gray-100">
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500 ">
-          {daysAgoFunction(job?.createdAt) == 0
+          {daysAgoFunction(job?.createdAt) === 0
             ? "Today"
             : `${daysAgoFunction(job?.createdAt)} days ago`}
         </p>
@@ -43,19 +43,19 @@ const Job = ({ job }) => {
       </div>
       <div className="flex item-center p-2 mt-4">
         <Badge className="text-blue-700 font-bold " variant="ghost">
-          {job?.position}
+          {job?.position}Positions
         </Badge>
         <Badge className="text-[7209b7]  font-bold " variant="ghost">
           {job?.jobType}
         </Badge>
         <Badge className="text-[#f83002] font-bold " variant="ghost">
-          {job?.salary}
+          {job?.salary}LPA
         </Badge>
       </div>
       <div className="flex items-center gap-4 mt-4">
         <Button
           onClick={() => navigate(`/description/${job?._id}`)}
-          variant="outine"
+          variant="outline"
         >
           Details
         </Button>
