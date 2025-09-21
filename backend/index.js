@@ -20,16 +20,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const corsOptions = {
   origin: [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175",
+    "http://localhost:5173", // dev port
+    "http://localhost:8000", // deployed frontend port
   ],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
-
-const PORT = process.env.PORT || 3000;
 
 //apis
 app.use("/api/v1/user", userRoute);
@@ -37,9 +34,10 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 app.use(express.static(path.join(_dirname, "/frontend/dist")));
-app.get("*wildcard", (_, res) => {
+app.get("/*wildcard", (_, res) => {
   res.sendFile(path.join(_dirname, "frontend", "dist", "index.html"));
 });
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   connectDB();
   console.log(`server running at port ${PORT}`);
