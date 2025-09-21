@@ -14,8 +14,8 @@ import { useSelector } from "react-redux";
 const AppliesJobTable = () => {
   const { allAppliedJobs } = useSelector((store) => store.job);
   return (
-    <div>
-      <Table>
+    <div className="w-full overflow-x-auto">
+      <Table className="min-w-[600px]">
         <TableCaption>A List of Jobs you have applied</TableCaption>
         <TableHeader>
           <TableRow>
